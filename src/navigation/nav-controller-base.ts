@@ -697,7 +697,9 @@ export class NavControllerBase extends Ion implements NavController {
 
     // create a callback that needs to run within zone
     // that will fire off the willEnter/Leave lifecycle events at the right time
-    transition.beforeAddRead(this._viewsWillLifecycles.bind(this, enteringView, leavingView));
+    if (!opts.lifeCycleEvents || (enteringView && opts.lifeCycleEvents.willEnter !== false) || (leavingView && opts.lifeCycleEvents.willLeave !== false)) {
+      transition.beforeAddRead(this._viewsWillLifecycles.bind(this, enteringView, leavingView));
+    }
 
     // get the set duration of this transition
     const duration = transition.getDuration();
@@ -750,12 +752,12 @@ export class NavControllerBase extends Ion implements NavController {
 
     if (hasCompleted) {
       // transition has completed (went from 0 to 1)
-      if (enteringView) {
+      if (enteringView && (!opts.lifeCycleEvents || opts.lifeCycleEvents.didEnter !== false)) {
         enteringName = enteringView.name;
         this._didEnter(enteringView);
       }
 
-      if (leavingView) {
+      if (leavingView && (!opts.lifeCycleEvents || opts.lifeCycleEvents.didLeave !== false)) {
         leavingName = leavingView.name;
         this._didLeave(leavingView);
       }

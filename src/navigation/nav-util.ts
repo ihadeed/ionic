@@ -197,6 +197,16 @@ export interface NavOptions {
   ev?: any;
   updateUrl?: boolean;
   isNavRoot?: boolean;
+  lifeCycleEvents?: LifeCycleEvents;
+}
+
+export interface LifeCycleEvents {
+  didLoad?: boolean;
+  willEnter?: boolean;
+  didEnter?: boolean;
+  willLeave?: boolean;
+  didLeave?: boolean;
+  willUnload?: boolean;
 }
 
 export interface Page extends Function {
